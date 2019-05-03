@@ -10,13 +10,21 @@
     const { speakerService } = param;
 
      router.get('/', async (req, res, next) => {
+        try {
+         const promises = [];
+         promises.push(speakerService.getListShort());
+         promises.push(speakerService.getAllArtwork());
 
-         const speakerslist = await speakerService.getListShort();
+         const results = await Promise.all(promises);
 
          return res.render('index', {
              page: 'Home',
-             speakerslist,
+             speakerslist: results[0],
+             artwork: results[1]
          });
+        } catch(err) {
+            return next(err);
+        }
      });
 
      router.use('/speakers', speakersRoute(param));
