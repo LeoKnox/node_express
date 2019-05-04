@@ -1,0 +1,40 @@
+extends ../layout/index
+block content
+    #feedback.container
+        .row
+        .col-sm-4
+            h1.feedback-form-title Send us feedback
+            if error
+                .alert.alert-danger
+                    | There was an error handling your request. Fill out all fields.
+            else if success
+                .alert.selrt-success
+                    | Thank you for feedback
+            form.feedback-form(method='POST' action='/feedback')
+                .form-group
+                    label(for='feedback-form-name') iName
+                    input#feedback-form-name.form-control(type='text', placeholder='Enter your name', name='fbName', value=fbName)
+                .form-group
+                    label(for='feedback-form-title') iTitle
+                    input#feedback-form-title.form-control(type='text', placeholder='Title of your feedback', name='fbTitle', value=fbTitle)
+                .form-group
+                    label(for='feedback-form-message') Message
+                    textarea#feedback-form-message.form-control(type='text', placeholder='Enter your message, then hit the submit', rows='6', name='fbMessage')=fbMessage
+                button.btn.btn-default.pull-right(type='submit') Submit
+        // primary
+        aside.col-sm-8
+            .maincontent.feedback
+            h2.article-title Recent Feedback
+            if !feedbacklist || !feedbacklist.length
+                | Nod feedback so far! Be the first.
+            else
+                .feedback-messages
+                    each item in feedbacklist
+                        .feedback-item.item-list.media-list
+                        .feedback-item.media
+                            .feedback-info.media-body
+                            .feedback-head
+                                .feedback-title=item.title
+                                small.feedback-name.label.label-info=item.name
+                            .feedback-message=item.message
+                    
